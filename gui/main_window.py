@@ -34,12 +34,19 @@ def modify_bunkhouse_team_capacity_handler():
 def assign_to_camp_bt_handler():
     from gui.assign_to_camp import start_assign_to_camp
     start_assign_to_camp()
-
+    
+def query_bt_handler():
+    from gui.query_browse import start_query_browse
+    start_query_browse()
+    
 def start_main_window():
     global root
     root = Tk()
     root.title("Main Window(Clerk)")
     root.minsize(width=400, height=500)
+    
+    query_bt = Button(root, text="Browse Camps, Bunkhouse and Teams", width=30, command = query_bt_handler)
+    query_bt.pack(expand=True)
 
     camper_window_bt = Button(root, text="Camper", width=30, command = camper_window_bt_handler)
     camper_window_bt.pack(expand=True)
@@ -72,6 +79,9 @@ def start_main_window_admin():
     root = Tk()
     root.title("Main Window(Admin)")
     root.minsize(width=400, height=500)
+    
+    query_bt = Button(root, text="Browse Camps, Bunkhouse and Teams", width=30, command = query_bt_handler)
+    query_bt.pack(expand=True)
 
     camper_window_bt = Button(root, text="Camper", width=30, command = camper_window_bt_handler)
     camper_window_bt.pack(expand=True)
