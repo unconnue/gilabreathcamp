@@ -54,3 +54,7 @@ class Bunkhouse(object):
     @staticmethod
     def update_bunkhouse_id(camper_id, camp_id, bunkhouse_id):
         update_bunkhouse_id_checked_in(camper_id, camp_id, bunkhouse_id)
+        
+    @staticmethod
+    def get_all_query_data():
+        return get_all_query_data_db()
