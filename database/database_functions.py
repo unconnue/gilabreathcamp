@@ -301,3 +301,19 @@ def update_bunkhouse_id_checked_in(camper_id, camp_id, bunkhouse_id):
     cur.execute(sql_query,(bunkhouse_id, camper_id, camp_id))
     conn.commit()
     conn.close()
+
+def get_all_query_data_db():
+    conn = connect()
+    cur = conn.cursor()
+    sql_query = """
+    select Camper_Camp_BunckHouse_Team.bunk_house_id,
+    Camper_Camp_BunckHouse_Team.camp_id,
+    Camps.start_date, Camps.end_date, Camper_Camp_BunckHouse_Team.camper_id,
+    Campers.first_name, Campers.last_name, Campers.gender, Camper_Camp_BunckHouse_Team.team_id
+    from Camper_Camp_BunckHouse_Team, Campers , Camps
+    where Camper_Camp_BunckHouse_Team.camper_id = Campers.camper_id and Camper_Camp_BunckHouse_Team.camp_id = Camps.camp_id
+    """
+    cur.execute(sql_query)
+    data = cur.fetchall()
+    conn.close()
+    return data
