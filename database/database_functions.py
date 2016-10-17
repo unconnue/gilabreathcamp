@@ -317,3 +317,12 @@ def get_all_query_data_db():
     data = cur.fetchall()
     conn.close()
     return data
+
+def update_bunkhouse_id_checked_in(camper_id, camp_id):
+    conn = connect()
+    cur = conn.cursor()
+    sql_query = "update Camper_Camp_BunckHouse_Team set  student_checked_in = 'Yes' where camper_id = ? and camp_id = ?"
+    cur.execute(sql_query,(camper_id, camp_id))
+    conn.commit()
+    conn.close()
+
