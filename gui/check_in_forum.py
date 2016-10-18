@@ -1,5 +1,9 @@
 from Tkinter import *
 import tkMessageBox
+from controller.camper import Camper
+from controller.camp import Camp
+from controller.bunkhouse import Bunkhouse
+from controller.team import Team
 
 top = None
 slepping_bag_CheckVar = None
@@ -14,6 +18,27 @@ camper_id_tb = None
 camp_id_tb = None
 
 def check_in_bt_handler():
+    
+    try:
+        camper_id = int(camper_id_tb.get())
+        camp_id = int(camp_id_tb.get())
+    except:
+        tkMessageBox.showinfo(title="message",message="camper and camp id must be nubmers")
+        return
+    checked_in_camper = Camper(camper_id)
+    checked_in_camp = Camp(camp_id)
+    if checked_in_camper.select_camper() == None:
+        tkMessageBox.showinfo(title="message",message="camper not found")
+        return
+    if checked_in_camp.select_camp() == None:
+        tkMessageBox.showinfo(title="message",message="camp not found")
+        return
+    #check if this camper is regestered in this camp
+    data = Bunkhouse.select_camp_team_bunkhouse(camper_id)
+    if not str(camp_id) in data[0]:
+        tkMessageBox.showinfo(title="message",message="Sorry, You need to register in this camp before Check-in.")
+        return
+    
     str_buffer = ""
     if slepping_bag_CheckVar.get() == 0:
         str_buffer += "Slepping Bag, "
@@ -37,6 +62,9 @@ def check_in_bt_handler():
         f.close()
         import webbrowser
         webbrowser.open("checkin.txt")
+        return
+    
+    Camp.camper_check_in(camper_id, camp_id)
     tkMessageBox.showinfo(title="message",message="you have checked_in")
     cancel_check_in_bt_handler()
 
@@ -128,6 +156,16 @@ def start_check_in_forum():
     check_in_bt = Button(top, text="Check-in Camper", width=30, command = check_in_bt_handler)
     cancel_check_in_bt = Button(top, text="Cancel", width=30, command = cancel_check_in_bt_handler)
 
+    camper_id_label = Label(top, text = "Enter camper ID")
+    camper_id_tb = Entry(top, width=20)
+    camp_id_label = Label(top, text = "Enter Camp ID")
+    camp_id_tb = Entry(top, width=20)
+
+    camper_id_label.pack()
+    camper_id_tb.pack(expand=True)
+    camp_id_label.pack()
+    camp_id_tb.pack(expand=True)
+    
     slepping_bag_CheckButton.pack(expand=True)
     pillow_CheckButton.pack(expand=True)
     blanket_CheckButton.pack(expand=True)
