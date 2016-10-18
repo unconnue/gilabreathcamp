@@ -14,9 +14,9 @@ def add_camp_bt_handler():
 
 def update_camp_bt_handler():
     from add_camp_forum import update_camp_forum
-    #try:
+    try:
     update_camp_forum(int(camp_id_tb.get()))
-    #except:
+    except:
     #    tkMessageBox.showinfo(title="message",message="camp ID must be a number")
 
 def delete_camp_bt_handler():
