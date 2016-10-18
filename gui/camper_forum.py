@@ -141,6 +141,9 @@ def update_camper(camper_id):
     camper_id_global = camper_id
     current_camper = Camper(camper_id)
     data = current_camper.select_camper()
+    if data == None:
+        tkMessageBox.showinfo(title="message",message="Camper Not Found")
+        return
     init_camper_forum()
     #init text boxes with data
     name1_tb.delete(0,END)
