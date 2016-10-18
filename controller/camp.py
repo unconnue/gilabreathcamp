@@ -50,6 +50,21 @@ class Camp:
     @staticmethod
     def get_all_ids():
         return get_all_camps_ids()
+    @staticmethod
+    def camper_check_in(camper_id, camp_id):
+        update_bunkhouse_id_checked_in(camper_id, camp_id)
+
+    @staticmethod
+    def get_start_end_data(camps):
+        lst = []
+        for camp_id in camps.split(','):
+            lst.append(get_start_end_data_db(camp_id.strip()))
+        start_date = ""
+        end_date = ""
+        for item in lst:
+            start_date += item[0] + ", "
+            end_date += item[1] + ", "
+        return start_date[:-2], end_date[:-2]
 
     def __str__(self):
         return self.__camp_id__, self.__start_date__, self.__end_date__, self.__bunck_num__, self.__team_num__, self.__cost__
