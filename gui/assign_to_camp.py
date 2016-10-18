@@ -1,5 +1,6 @@
 from Tkinter import *
 import tkMessageBox
+from datetime import datetime
 
 top = None
 camper_id_tb = None
