@@ -47,3 +47,7 @@ class Camper:
 
     def __str__(self):
         return self.__camper_id__, self.__first_name__, self.__last_name__, self.__birth_date__, self.__gender__, self.__address__
+     
+    @staticmethod
+    def get_all_ids_assigned_camp():
+        return get_all_ids_assigned_camp_db()

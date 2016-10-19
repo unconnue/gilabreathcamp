@@ -1,5 +1,6 @@
 from Tkinter import *
 import tkMessageBox
+from datetime import datetime
 
 top = None
 camper_id_tb = None
@@ -21,19 +22,20 @@ def assign_to_camp_bt_handler():
     if checked_in_camper.select_camper() == None:
         tkMessageBox.showinfo(title="message",message="camper not found")
         return
-    if checked_in_camp.select_camp() == None:
+    tmp_camp_data = checked_in_camp.select_camp()
+    if tmp_camp_data == None:
         tkMessageBox.showinfo(title="message",message="camp not found")
         return
     #check there is a room for this camper in bunkhouse gender?
-    data = checked_in_camper.select_camper()
-    gender = data[3]
+    data_camper = checked_in_camper.select_camper()
+    gender = data_camper[3]
     bunkhouses_ids = Bunkhouse.get_available_bunkgouses(gender, camp_id)
     if len(bunkhouses_ids) < 1:
         tkMessageBox.showinfo(title="message",message="Sorry, This camp is not available, Choose another one")
         return
     #check if this camper is already regestered in this camp
-    data = Bunkhouse.select_camp_team_bunkhouse(camper_id)
-    if str(camp_id) in data[0]:
+    data_camp = Bunkhouse.select_camp_team_bunkhouse(camper_id)
+    if str(camp_id) in data_camp[0]:
         tkMessageBox.showinfo(title="message",message="Sorry, This camper is already registered in this camp")
         return
     teams_ids = Team.get_available_team(camp_id)
@@ -44,6 +46,22 @@ def assign_to_camp_bt_handler():
     Bunkhouse.insert_check_in(camper_id,camp_id,teams_ids[0][0],bunkhouses_ids[0][0])
     #show a message box saying, the camper checked in successfully
     tkMessageBox.showinfo(title="message",message="Camper Assigned successfully")
+    mailing_date = str(datetime.now().date())
+    first_name = data_camper[0]
+    last_name = data_camper[1]
+    address = data_camper[4]
+    camp_start_date = tmp_camp_data[0]
+    camp_end_date = tmp_camp_data[1]
+    f1 = open("Mailing Label.txt", 'w')
+    f1.write(mailing_date + "\n" + first_name + ' ' + last_name + "\n" + address)
+    f1.close()
+    import webbrowser
+    webbrowser.open("Mailing Label.txt")
+
+    f2 = open("acceptance letter.txt", 'w')
+    f2.write("Congratulations " + first_name + ' ' + last_name +"! you have been accepted for the camp starting on " + camp_start_date + " and ending on " + camp_end_date + ".\nThanks")
+    f2.close()
+    webbrowser.open("acceptance letter.txt")
     cancel_bt_handler()
 
 def cancel_bt_handler():
